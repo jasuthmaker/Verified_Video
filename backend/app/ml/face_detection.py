@@ -127,30 +127,34 @@ class FaceDetector:
 
     def _calculate_head_pose(self, landmarks: np.ndarray) -> Dict:
         """
-        Calculate head rotation angles (yaw, pitch, roll)
-        Uses 3D coordinates from face mesh landmarks
+        Calculate normalised head pose ratios (not raw angles).
 
-        Landmarks used:
-        - 168: Right eye right corner
-        - 393: Left eye left corner
-        - 6: Nose tip
-        - 10: Chin
+        yaw:   0 = looking straight, increases as head turns left/right
+        pitch: 0 = looking straight, increases as head tilts up/down
         """
-        # Key points for head pose estimation
-        nose_tip = landmarks[4]  # Nose tip
-        chin = landmarks[152]  # Chin
-        left_eye = landmarks[33]  # Left eye right corner
-        right_eye = landmarks[263]  # Right eye left corner
+        nose_tip   = landmarks[4]    # nose tip
+        chin       = landmarks[152]  # chin
+        left_eye   = landmarks[33]   # left eye outer corner
+        right_eye  = landmarks[263]  # right eye outer corner
 
-        # Calculate vectors
-        yaw = np.arctan2(right_eye[0] - left_eye[0], 0.1)  # Horizontal rotation
-        pitch = np.arctan2(chin[1] - nose_tip[1], 0.1)  # Vertical rotation
-        roll = 0  # Not easily calculated from 2D landmarks, approximate as 0
+        eye_mid_x   = (left_eye[0] + right_eye[0]) / 2
+        eye_mid_y   = (left_eye[1] + right_eye[1]) / 2
+        eye_width   = max(abs(right_eye[0] - left_eye[0]), 1e-6)
+        face_height = max(abs(chin[1] - eye_mid_y), 1e-6)
+
+        # Yaw: how far nose deviates horizontally from eye midpoint, normalised by eye width
+        # ~0 when straight, ~0.3–0.5 when turned significantly
+        yaw = abs(nose_tip[0] - eye_mid_x) / eye_width
+
+        # Pitch: signed vertical deviation from expected nose position (~45% face height below eyes)
+        # positive = looking DOWN (phone in lap), negative = looking UP
+        nose_rel_y = (nose_tip[1] - eye_mid_y) / face_height
+        pitch = nose_rel_y - 0.45
 
         return {
-            "yaw": float(yaw),  # Left-right
-            "pitch": float(pitch),  # Up-down
-            "roll": float(roll),  # Tilt
+            "yaw": float(yaw),
+            "pitch": float(pitch),
+            "roll": 0.0,
         }
 
     def _calculate_eye_openness(self, landmarks: np.ndarray) -> Dict:
@@ -159,9 +163,10 @@ class FaceDetector:
 
         Uses eye landmarks to measure vertical eye opening
         """
-        # Eye landmarks for left and right eye
-        LEFT_EYE = [33, 160, 158, 133, 153, 144]  # Left eye points
-        RIGHT_EYE = [362, 385, 387, 362, 381, 374]  # Right eye points
+        # Eye landmarks for left and right eye (MediaPipe FaceMesh)
+        # Format: [outer, top-inner, top-outer, inner, bottom-inner, bottom-outer]
+        LEFT_EYE  = [33,  160, 158, 133, 153, 144]
+        RIGHT_EYE = [362, 385, 387, 263, 381, 374]  # [3] was 362 (duplicate) → fixed to 263
 
         def calculate_eye_aspect_ratio(eye_landmarks):
             """EAR = ||P2 - P6|| / (2 * ||P3 - P5||)"""

@@ -1,0 +1,252 @@
+[
+  {
+    "id": 1,
+    "status": "complete",
+    "priority": "high",
+    "agent": "frontend",
+    "task": "Fix responsive design on mobile (width < 768px)",
+    "description": "Ensure all pages work properly on mobile devices - test at 375px, 768px, and 1024px breakpoints",
+    "files": ["src/pages/LandingPage.tsx", "src/pages/Login.tsx", "src/pages/Signup.tsx"],
+    "acceptance_criteria": "All pages render correctly on mobile without horizontal scroll"
+  },
+  {
+    "id": 2,
+    "status": "complete",
+    "priority": "high",
+    "agent": "frontend",
+    "task": "Fix TypeScript errors in StudentWatch.tsx",
+    "description": "Resolve any TypeScript strict mode errors in StudentWatch component",
+    "files": ["src/pages/StudentWatch.tsx"],
+    "acceptance_criteria": "npm run type-check passes with no errors"
+  },
+  {
+    "id": 3,
+    "status": "complete",
+    "priority": "high",
+    "agent": "frontend",
+    "task": "Add loading states to all pages",
+    "description": "Add spinner/skeleton loaders while data is fetching",
+    "files": ["src/pages/TeacherDashboard.tsx", "src/pages/StudentWatch.tsx"],
+    "acceptance_criteria": "Visual loading indicators appear during data fetch"
+  },
+  {
+    "id": 4,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "frontend",
+    "task": "Improve error handling with toast notifications",
+    "description": "Replace alert() with toast notifications for better UX",
+    "files": ["src/pages/Login.tsx", "src/pages/Signup.tsx", "src/pages/TeacherDashboard.tsx"],
+    "acceptance_criteria": "All errors show as toast notifications, not alert() dialogs"
+  },
+  {
+    "id": 5,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "frontend",
+    "task": "Add accessibility features",
+    "description": "Add ARIA labels, proper semantic HTML, keyboard navigation",
+    "files": ["src/pages/Login.tsx", "src/pages/Signup.tsx", "src/pages/LandingPage.tsx"],
+    "acceptance_criteria": "Pages pass basic a11y audit (WCAG AA)"
+  },
+  {
+    "id": 6,
+    "status": "complete",
+    "priority": "high",
+    "agent": "backend",
+    "task": "Fix backend authentication endpoints",
+    "description": "Ensure signup and login endpoints work correctly with proper validation",
+    "files": ["backend/app/api/auth.py"],
+    "acceptance_criteria": "Login and signup endpoints return proper JWT tokens"
+  },
+  {
+    "id": 7,
+    "status": "complete",
+    "priority": "high",
+    "agent": "backend",
+    "task": "Connect backend to Supabase database",
+    "description": "Replace in-memory storage with actual Supabase database calls",
+    "files": ["backend/app/api/auth.py", "backend/app/api/sessions.py", "backend/app/api/engagement.py"],
+    "acceptance_criteria": "All data persists in Supabase after server restart"
+  },
+  {
+    "id": 8,
+    "status": "complete",
+    "priority": "high",
+    "agent": "backend",
+    "task": "Implement real face detection in engagement endpoint",
+    "description": "Ensure face detection actually analyzes frames instead of returning mock data",
+    "files": ["backend/app/ml/face_detection.py", "backend/app/api/engagement.py"],
+    "acceptance_criteria": "Face detection returns accurate results for real video frames"
+  },
+  {
+    "id": 9,
+    "status": "complete",
+    "priority": "high",
+    "agent": "backend",
+    "task": "Fix WebSocket engagement tracking",
+    "description": "Ensure WebSocket properly receives frames and returns attention scores",
+    "files": ["backend/app/api/websocket.py", "backend/app/ml/attention.py"],
+    "acceptance_criteria": "Real-time attention scores update every 5 seconds over WebSocket"
+  },
+  {
+    "id": 10,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "backend",
+    "task": "Add input validation to all endpoints",
+    "description": "Validate email, password, session_key, and frame data",
+    "files": ["backend/app/api/auth.py", "backend/app/api/sessions.py"],
+    "acceptance_criteria": "All invalid inputs rejected with 400 Bad Request"
+  },
+  {
+    "id": 11,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "backend",
+    "task": "Add CORS and security headers",
+    "description": "Configure CORS properly and add security headers",
+    "files": ["backend/main.py"],
+    "acceptance_criteria": "CORS allows frontend origin, security headers present"
+  },
+  {
+    "id": 12,
+    "status": "complete",
+    "priority": "high",
+    "agent": "tester",
+    "task": "Run full test suite and report results",
+    "description": "Execute npm test and pytest, report all test results",
+    "files": ["backend/tests/test_auth.py", "backend/tests/test_sessions.py"],
+    "acceptance_criteria": "All tests passing or failures clearly documented"
+  },
+  {
+    "id": 13,
+    "status": "complete",
+    "priority": "high",
+    "agent": "tester",
+    "task": "Verify production build succeeds",
+    "description": "Run npm run build and verify no errors",
+    "files": ["dist folder"],
+    "acceptance_criteria": "npm run build completes without errors"
+  },
+  {
+    "id": 14,
+    "status": "complete",
+    "priority": "high",
+    "agent": "tester",
+    "task": "Test login flow end-to-end",
+    "description": "Manually test: signup -> login -> dashboard access",
+    "files": ["all pages"],
+    "acceptance_criteria": "Complete login flow works without errors"
+  },
+  {
+    "id": 15,
+    "status": "complete",
+    "priority": "high",
+    "agent": "tester",
+    "task": "Test video watching with engagement tracking",
+    "description": "Test student can watch video and see real-time attention scores",
+    "files": ["StudentWatch.tsx", "WebSocket endpoint"],
+    "acceptance_criteria": "Attention scores display and update in real-time"
+  },
+  {
+    "id": 16,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "tester",
+    "task": "Test mobile responsiveness across devices",
+    "description": "Verify all pages work on 375px, 768px, and 1024px widths",
+    "files": ["all pages"],
+    "acceptance_criteria": "No horizontal scroll, all elements visible on mobile"
+  },
+  {
+    "id": 17,
+    "status": "complete",
+    "priority": "high",
+    "agent": "researcher",
+    "task": "Audit codebase for security vulnerabilities",
+    "description": "Check for XSS, SQL injection, CSRF, authentication issues",
+    "files": ["all files"],
+    "acceptance_criteria": "Document all findings and recommend fixes"
+  },
+  {
+    "id": 18,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "researcher",
+    "task": "Analyze WebSocket implementation for issues",
+    "description": "Review WebSocket code for memory leaks, proper cleanup, error handling",
+    "files": ["StudentWatch.tsx", "backend/app/api/websocket.py"],
+    "acceptance_criteria": "Document findings and recommend improvements"
+  },
+  {
+    "id": 19,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "frontend",
+    "task": "Add dark mode toggle",
+    "description": "Implement dark/light mode theme switching",
+    "files": ["src/App.tsx", "tailwind.config.js"],
+    "acceptance_criteria": "Theme toggles between light and dark modes"
+  },
+  {
+    "id": 20,
+    "status": "complete",
+    "priority": "low",
+    "agent": "frontend",
+    "task": "Optimize images and assets",
+    "description": "Compress images, lazy-load images, optimize bundle size",
+    "files": ["src/pages/LandingPage.tsx"],
+    "acceptance_criteria": "Bundle size < 500KB (gzipped) — achieved: 66KB gzip"
+  },
+  {
+    "id": 21,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "backend",
+    "task": "Add logging and monitoring",
+    "description": "Add proper logging for debugging and monitoring",
+    "files": ["backend/main.py"],
+    "acceptance_criteria": "All endpoints log requests and responses"
+  },
+  {
+    "id": 22,
+    "status": "complete",
+    "priority": "low",
+    "agent": "backend",
+    "task": "Add rate limiting",
+    "description": "Implement rate limiting on auth endpoints",
+    "files": ["backend/main.py"],
+    "acceptance_criteria": "Login attempts limited to 5 per minute per IP"
+  },
+  {
+    "id": 23,
+    "status": "complete",
+    "priority": "high",
+    "agent": "frontend",
+    "task": "Test form validation thoroughly",
+    "description": "Verify all form validation works correctly",
+    "files": ["Login.tsx", "Signup.tsx"],
+    "acceptance_criteria": "Invalid inputs prevented with clear error messages"
+  },
+  {
+    "id": 24,
+    "status": "complete",
+    "priority": "medium",
+    "agent": "backend",
+    "task": "Add API documentation",
+    "description": "Document all API endpoints with examples",
+    "files": ["backend/main.py"],
+    "acceptance_criteria": "Swagger docs available at /docs"
+  },
+  {
+    "id": 25,
+    "status": "complete",
+    "priority": "low",
+    "agent": "frontend",
+    "task": "Add PWA support (Progressive Web App)",
+    "description": "Add service worker and manifest for offline support",
+    "files": ["public/manifest.json", "src/service-worker.ts"],
+    "acceptance_criteria": "App installable and works offline"
+  }
+]

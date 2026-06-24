@@ -1,34 +1,18 @@
 import { Link } from 'react-router-dom'
-import { useAuth } from '@/services/auth'
 
 export default function HomePage() {
-  const { user } = useAuth()
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-elevation-1">
-        <h1 className="text-2xl font-bold text-primary-600">Verified Video</h1>
+      <nav className="flex items-center justify-between px-6 py-4 bg-white shadow">
+        <h1 className="text-2xl font-bold text-blue-600">Verified Video</h1>
         <div className="flex gap-4">
-          {user ? (
-            <>
-              <span className="text-gray-600">{user.email}</span>
-              {user.role === 'teacher' && (
-                <Link to="/teacher/dashboard" className="btn-primary btn-small">
-                  Dashboard
-                </Link>
-              )}
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="btn-secondary btn-small">
-                Login
-              </Link>
-              <Link to="/signup" className="btn-primary btn-small">
-                Sign Up
-              </Link>
-            </>
-          )}
+          <Link to="/login" className="px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded">
+            Login
+          </Link>
+          <Link to="/signup" className="px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700">
+            Sign Up
+          </Link>
         </div>
       </nav>
 
@@ -41,16 +25,14 @@ export default function HomePage() {
           The engagement verification platform built for K-12 educators who believe in privacy over surveillance.
         </p>
 
-        {!user && (
-          <div className="flex gap-4 justify-center">
-            <Link to="/signup" className="btn-primary">
-              Start Free Trial
-            </Link>
-            <Link to="/login" className="btn-secondary">
-              Sign In
-            </Link>
-          </div>
-        )}
+        <div className="flex gap-4 justify-center">
+          <Link to="/signup" className="btn-primary">
+            Start Free Trial
+          </Link>
+          <Link to="/login" className="btn-secondary">
+            Sign In
+          </Link>
+        </div>
       </section>
 
       {/* Features Section */}

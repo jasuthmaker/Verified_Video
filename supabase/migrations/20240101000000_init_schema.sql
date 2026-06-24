@@ -151,16 +151,27 @@ ALTER TABLE deletion_requests ENABLE ROW LEVEL SECURITY;
 -- RLS Policies: Users
 CREATE POLICY "Users can view their own profile"
   ON users FOR SELECT
-  USING (auth.uid() = id OR role = 'admin');
+  USING (auth.uid() = id);
 
 CREATE POLICY "Users can update their own profile"
   ON users FOR UPDATE
   USING (auth.uid() = id);
 
+CREATE POLICY "Teachers can view student profiles for their sessions"
+  ON users FOR SELECT
+  USING (
+    id IN (
+      SELECT DISTINCT student_id FROM engagement_logs
+      WHERE session_id IN (
+        SELECT id FROM video_sessions WHERE teacher_id = auth.uid()
+      )
+    )
+  );
+
 -- RLS Policies: Video Sessions
 CREATE POLICY "Teachers can view their own sessions"
   ON video_sessions FOR SELECT
-  USING (auth.uid() = teacher_id OR role = 'admin');
+  USING (auth.uid() = teacher_id);
 
 CREATE POLICY "Teachers can create sessions"
   ON video_sessions FOR INSERT
@@ -170,7 +181,7 @@ CREATE POLICY "Teachers can update their own sessions"
   ON video_sessions FOR UPDATE
   USING (auth.uid() = teacher_id);
 
-CREATE POLICY "Public can view active sessions via session_key"
+CREATE POLICY "Public can view active sessions"
   ON video_sessions FOR SELECT
   USING (is_active = TRUE);
 

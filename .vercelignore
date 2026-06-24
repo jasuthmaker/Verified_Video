@@ -1,0 +1,6 @@
+backend/
+agents/
+supabase/
+*.md
+tasks.json
+project_state.json

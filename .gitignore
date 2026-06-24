@@ -73,3 +73,5 @@ logs/
 *.bak
 .project
 .pydevproject
+
+.vercel

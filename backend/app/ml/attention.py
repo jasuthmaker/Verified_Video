@@ -17,9 +17,9 @@ class AttentionCalculator:
 
     def __init__(self):
         """Initialize attention calculator"""
-        self.eye_openness_threshold = 0.2  # Eye open > 0.2 = attentive
-        self.head_yaw_threshold = 0.5  # Max yaw rotation (radians)
-        self.head_pitch_threshold = 0.7  # Max pitch rotation (radians)
+        self.eye_openness_threshold = 0.1   # EAR below this = closed
+        self.head_yaw_threshold = 0.15    # normalised ratio; >0.15 = turned
+        self.head_pitch_threshold = 0.12  # normalised ratio; >0.12 = tilted
         self.min_attention = 0
         self.max_attention = 100
 
@@ -64,18 +64,22 @@ class AttentionCalculator:
 
     def _calculate_eye_score(self, eye_openness: Dict) -> float:
         """
-        Eye openness score (0-100)
-        - 0: Eyes completely closed (sleeping, looking down)
-        - 50: Eyes half-open
-        - 100: Eyes wide open
+        Eye openness score (0-100).
+
+        MediaPipe FaceMesh EAR values in normalised coordinates:
+          ~0.05 = eyes closed / blinking
+          ~0.25 = eyes normally open
+          ~0.35 = eyes wide open
+        Raw multiplication by 100 was broken (gave max ~35).
+        Now we normalise against the actual EAR range.
         """
-        avg_openness = eye_openness.get("average", 0.5)
+        avg_openness = eye_openness.get("average", 0.15)
 
-        # Map openness (0-1) to score (0-100)
-        # Linear: eye_openness * 100
-        score = avg_openness * 100
+        EAR_CLOSED = 0.05   # below this = definitely closed
+        EAR_OPEN   = 0.30   # at/above this = fully open → 100%
 
-        return float(np.clip(score, 0, 100))
+        normalized = (avg_openness - EAR_CLOSED) / (EAR_OPEN - EAR_CLOSED)
+        return float(np.clip(normalized * 100, 0, 100))
 
     def _calculate_pose_score(self, head_pose: Dict) -> float:
         """
@@ -85,7 +89,7 @@ class AttentionCalculator:
         - 100: Facing forward (yaw ≈ 0, pitch ≈ 0)
         """
         yaw = abs(head_pose.get("yaw", 0))
-        pitch = abs(head_pose.get("pitch", 0))
+        pitch = abs(head_pose.get("pitch", 0))  # pitch is signed; abs() for penalty
         roll = abs(head_pose.get("roll", 0))
 
         # Calculate penalty for each rotation

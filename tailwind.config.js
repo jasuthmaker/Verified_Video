@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -58,8 +59,11 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['Bricolage Grotesque', 'Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
+        'float': 'float 4s ease-in-out infinite',
+        'draw-in': 'draw-in 1s ease forwards',
         'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'slide-in-right': 'slide-in-right 0.4s ease-out',
         'slide-in-left': 'slide-in-left 0.4s ease-out',
@@ -69,6 +73,14 @@ export default {
         'confetti-fall': 'confetti-fall 2s ease-in forwards',
       },
       keyframes: {
+        'float': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'draw-in': {
+          'from': { strokeDashoffset: '1' },
+          'to':   { strokeDashoffset: '0' },
+        },
         'pulse-glow': {
           '0%, 100%': { opacity: '1', transform: 'scale(1)' },
           '50%': { opacity: '0.8', transform: 'scale(1.05)' },
