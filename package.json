@@ -1,0 +1,44 @@
+{
+  "name": "verified-video",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Privacy-first engagement verification for video learning",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext ts,tsx",
+    "supabase:migrate": "supabase migration new",
+    "supabase:push": "supabase db push",
+    "supabase:pull": "supabase db pull",
+    "supabase:seed": "supabase seed run"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@supabase/supabase-js": "^2.38.0",
+    "@mediapipe/tasks-vision": "^0.10.0",
+    "@mediapipe/tasks-web": "^0.10.0",
+    "react-router-dom": "^6.20.0",
+    "axios": "^1.6.0",
+    "lucide-react": "^0.294.0",
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.0.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "tailwindcss": "^3.3.0",
+    "postcss": "^8.4.31",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-@typescript-eslint": "^6.13.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@types/node": "^20.10.0",
+    "supabase": "^1.99.0"
+  }
+}
